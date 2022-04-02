@@ -28,7 +28,7 @@ import com.example.mymovieapp.widgets.MovieRow
 
 @Composable
 fun FavoriteScreen (navController: NavController = rememberNavController()){
-    MyFavoritesApp (navController = navController){
+    MyFavoritesApp (navController = navController /*added, else no navigation back*/){
         FavoritesContent(navController = navController, movieList = getFavorites())
     }
 }
