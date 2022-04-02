@@ -72,8 +72,6 @@ fun MovieRow(movie: Movie = getMovies()[0],
                     ) {
                         //Icon(imageVector = Icons.Default.AccountBox, contentDescription = "Movie Picture.")
                         AsyncImage(
-                            //model = "https://images-na.ssl-images-amazon.com/images/M/MV5BMjEyOTYyMzUxNl5BMl5BanBnXkFtZTcwNTg0MTUzNA@@._V1_SX1500_CR0,0,1500,999_AL_.jpg",
-
                             model = ImageRequest.Builder(LocalContext.current)
                                  .data(movie.images[0])
                                  .crossfade(true)
@@ -82,10 +80,6 @@ fun MovieRow(movie: Movie = getMovies()[0],
                             contentScale = ContentScale.Crop,
                             modifier = Modifier.clip(CircleShape)
                         )
-                        /*AsyncImage(
-                        model = movie.images[0],
-                        contentDescription = null
-                        )*/
                     }
 
                     Column(

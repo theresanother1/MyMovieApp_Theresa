@@ -1,5 +1,6 @@
 package com.example.mymovieapp.screens.all
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.expandVertically
@@ -74,7 +75,10 @@ fun MyApp(navController:NavController = rememberNavController(), content: @Compo
                             DropdownMenuItem(onClick = {
 
                                 /**TEST*/
+                                var x = navController.currentBackStackEntry
+                                Log.d("Favorites", "In Homescreen before clicking Favorites$x")
                                 navController.navigate(route= MovieScreens.FavoritesScreen.name)
+
                             }) {
                                 Row() {
                                     Icon(imageVector = Icons.Default.Favorite, contentDescription = "Favorites", modifier = Modifier.padding(4.dp)

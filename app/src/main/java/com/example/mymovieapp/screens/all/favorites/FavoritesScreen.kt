@@ -1,5 +1,6 @@
 package com.example.mymovieapp.screens.all.favorites
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -27,7 +28,7 @@ import com.example.mymovieapp.widgets.MovieRow
 
 @Composable
 fun FavoriteScreen (navController: NavController = rememberNavController()){
-    MyFavoritesApp {
+    MyFavoritesApp (navController = navController){
         FavoritesContent(navController = navController, movieList = getFavorites())
     }
 }
@@ -49,11 +50,7 @@ fun FavoritesContent(navController: NavController, movieList: List<Movie> = getF
 @Composable
 fun MyFavoritesApp(navController:NavController = rememberNavController(), content: @Composable () -> Unit) {
 
-    //mach Observable, um das DropDownMenu zu expanden, oder nicht
-    var showMenu by remember {
-        mutableStateOf(false)
-    }
-    MyMovieAppTheme() {
+   // MyMovieAppTheme {
         //vergleichbar mit Surface, mit mehr Feature Möglichkeiten, zB Top Bar, floating Action buttons ....
         Scaffold(
             modifier = Modifier.background(color = Color.Cyan),
@@ -63,7 +60,13 @@ fun MyFavoritesApp(navController:NavController = rememberNavController(), conten
                         Icon(imageVector = Icons.Default.ArrowBack,
                             contentDescription = "Arrow Back",
                             modifier = Modifier.clickable {
+                                Log.d("Favorites", "callback")
+                                var x = navController.currentBackStackEntry
+                                Log.d("Favorites", "In Favoritescreen before clicking backbutton $x")
+
                                 navController.popBackStack()        //goes back to last screen
+                                Log.d("Favorites", "In Favoritescreen AFTER clicking backbutton $x")
+
                             })
                         Spacer(modifier = Modifier.width(20.dp))
 
@@ -77,5 +80,5 @@ fun MyFavoritesApp(navController:NavController = rememberNavController(), conten
             content()
             //HomeScreen()
         }
-    }
+   // }
 }
