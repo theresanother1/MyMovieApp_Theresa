@@ -26,7 +26,9 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -67,8 +69,8 @@ fun MovieRow(movie: Movie = getMovies()[0],
                         modifier = Modifier
                             .size(120.dp)
                             .padding(12.dp),
-                        shape = RectangleShape,
-                        elevation = 3.dp
+                        shape = CircleShape,
+                        elevation = 6.dp
                     ) {
                         //Icon(imageVector = Icons.Default.AccountBox, contentDescription = "Movie Picture.")
                         AsyncImage(
@@ -148,6 +150,12 @@ fun MovieRow(movie: Movie = getMovies()[0],
 
 @Composable
 fun HorizontalScrollableImageView(movie:Movie = getMovies()[0]){
+    Column(modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ){
+        Text(text = "Movie Images", style = MaterialTheme.typography.h5)
+    }
+
     LazyRow{
         items(movie.images){ image ->
 
@@ -162,7 +170,8 @@ fun HorizontalScrollableImageView(movie:Movie = getMovies()[0]){
                         .build(),
                     contentDescription = "${movie.title} image",
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.clip(RoundedCornerShape(corner = CornerSize(32.dp)))
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(corner = CornerSize(24.dp)))
                         .padding(6.dp)
                 )
             }
