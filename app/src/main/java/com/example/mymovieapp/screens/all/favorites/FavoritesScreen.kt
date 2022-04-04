@@ -23,18 +23,21 @@ import com.example.mymovieapp.models.getFavorites
 import com.example.mymovieapp.models.getMovies
 import com.example.mymovieapp.navigation.MovieScreens
 import com.example.mymovieapp.ui.theme.MyMovieAppTheme
+import com.example.mymovieapp.viewmodel.FavoritesViewModel
 import com.example.mymovieapp.widgets.MovieRow
 
 
 @Composable
-fun FavoriteScreen (navController: NavController = rememberNavController()){
+fun FavoriteScreen (navController: NavController = rememberNavController(), viewModel: FavoritesViewModel){
     MyFavoritesApp (navController = navController /*added, else no navigation back*/){
-        FavoritesContent(navController = navController, movieList = getFavorites())
+        FavoritesContent(navController = navController, movieList = viewModel.favoriteMovies)
     }
 }
 
 @Composable
-fun FavoritesContent(navController: NavController, movieList: List<Movie> = getFavorites()) {
+fun FavoritesContent(
+    navController: NavController,
+    movieList: List<Movie> = getFavorites()) {
     LazyColumn {
         items(movieList) { movie ->
             // movierow hat als argument eine funktion (navcontroller navigate bei click auf die row

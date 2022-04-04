@@ -16,12 +16,14 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.mymovieapp.models.Movie
 import com.example.mymovieapp.models.getMovies
+import com.example.mymovieapp.viewmodel.FavoritesViewModel
 import com.example.mymovieapp.widgets.HorizontalScrollableImageView
 import com.example.mymovieapp.widgets.MovieRow
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 fun DetailScreen (
+    viewModel: FavoritesViewModel,
     navController: NavController = rememberNavController(),
     movieId:String? = "tt0499549"    )
     {
@@ -45,7 +47,7 @@ fun DetailScreen (
                 }
             }
         ) {
-            MainContent (movie = movie)
+            MainContent (movie = movie, viewModel = viewModel)
             //HomeScreen()
         }
 
@@ -53,7 +55,7 @@ fun DetailScreen (
 
 
 @Composable
-fun MainContent(movie: Movie){
+fun MainContent(movie: Movie, viewModel: FavoritesViewModel){
     Surface(modifier = Modifier
         .fillMaxWidth()
         .fillMaxHeight()){

@@ -64,4 +64,7 @@ dependencies {
 
     //Coil Component for Images --> das :$coil_version dann im projekt verwenden, damit dynamisch geladen
     implementation "io.coil-kt:coil-compose:$coil_version"
+
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
+
 }

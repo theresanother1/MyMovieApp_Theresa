@@ -1,5 +1,6 @@
 package com.example.mymovieapp.widgets
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.expandVertically
@@ -13,9 +14,7 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
 import androidx.compose.runtime.remember
@@ -29,23 +28,35 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.mymovieapp.models.Movie
 import com.example.mymovieapp.models.getMovies
 
+import com.example.mymovieapp.viewmodel.FavoritesViewModel
 
+@Preview
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun MovieRow(movie: Movie = getMovies()[0],
+fun MovieRow(movie: Movie = getMovies()[3],
              //callback function --> zugriff auf die MovieId, die von unten nach oben gepoppt wird
              /**CALLBACK FUNCTION -> mit default value schreiben, sonst müsst ich parameter an JEDER EINZELNEN STELLE adaptieren */
              onItemClick: (String) -> Unit = {}    // kann jetzt jedes Mal, wenn MovieRow aufgerufen wird, dieses Lambda übergeben
+           // content: @Composable (Movie) -> Unit = {}
 ) {
     var changeArrow by remember{
         mutableStateOf(false)
     }
+
+    /**
+     * added for passing value
+     */
+    var favoriteState by remember{
+        mutableStateOf(false)
+    }
+
     Column() {
         Surface(
             //modifier = Modifier.fillMaxSize(),
@@ -82,6 +93,7 @@ fun MovieRow(movie: Movie = getMovies()[0],
                             contentScale = ContentScale.Crop,
                             modifier = Modifier.clip(CircleShape)
                         )
+
                     }
 
                     Column(
@@ -111,6 +123,7 @@ fun MovieRow(movie: Movie = getMovies()[0],
                                     .padding(4.dp)
                                     .clickable(onClick = { changeArrow = !changeArrow })
                             )
+
                         }
                         Column() {
                             AnimatedVisibility(
@@ -140,13 +153,64 @@ fun MovieRow(movie: Movie = getMovies()[0],
                         }
                     }
 
+
+                    favoriteButton( isFavorite = false)
+
+
+
+
                 }
 
             }
+
         }
     }
 
+    /**
+     * added button in movierow
+     */
+
 }
+@Composable
+fun favoriteButton(isFavorite:Boolean){
+
+    /*
+     clickable {
+         onClick = {favoriteState != favoriteState}
+         onItemClick(movie.id)
+     }
+
+     modifier = Modifier
+         .padding(4.dp)
+         .clickable(onClick = { changeArrow = !changeArrow })
+
+
+     */
+    if (isFavorite){
+        Column(modifier = Modifier.heightIn(min= 130.dp).fillMaxWidth().padding(horizontal = 2.dp)
+            , horizontalAlignment = Alignment.End,
+            verticalArrangement = Arrangement.Center
+        ){ IconButton(modifier = Modifier.clickable(onClick = { /*TODO*/ } ), onClick = {/*TODO*/}) {
+            Icon(imageVector = Icons.Default.Favorite, contentDescription = "Favorites")
+        }
+    }}
+    else if (!isFavorite) {
+        Column(modifier = Modifier.heightIn(min= 130.dp).fillMaxWidth()
+            , horizontalAlignment = Alignment.End,
+            verticalArrangement = Arrangement.Center
+        ){IconButton(onClick = {}) {
+            Icon(imageVector = Icons.Default.FavoriteBorder, contentDescription = "NotFavorites")
+        }
+    }}
+}
+/* IconButton(onClick = { if (!viewModel.checkIfFavorite(movie)) {
+     viewModel.addFavorites(movie)
+ } }) {
+     Icon(imageVector = Icons.Default.FavoriteBorder, contentDescription = "Favorites")
+ }*/
+
+
+
 
 @Composable
 fun HorizontalScrollableImageView(movie:Movie = getMovies()[0]){

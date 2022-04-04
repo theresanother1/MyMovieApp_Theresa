@@ -28,17 +28,18 @@ import com.example.mymovieapp.models.Movie
 import com.example.mymovieapp.models.getMovies
 import com.example.mymovieapp.navigation.MovieScreens
 import com.example.mymovieapp.ui.theme.MyMovieAppTheme
+import com.example.mymovieapp.viewmodel.FavoritesViewModel
 import com.example.mymovieapp.widgets.MovieRow
 
 @Composable
-fun HomeScreen (navController: NavController = rememberNavController()){
+fun HomeScreen (navController: NavController = rememberNavController(), viewModel: FavoritesViewModel){
     MyApp (navController = navController){
-        MainContent(navController = navController, movieList = getMovies())
+        MainContent(navController = navController, movieList = getMovies(), viewModel = viewModel)
     }
 }
 
 @Composable
-fun MainContent(navController: NavController, movieList: List<Movie>) {
+fun MainContent(navController: NavController, movieList: List<Movie>, viewModel:FavoritesViewModel) {
     LazyColumn {
         items(movieList) { movie ->
             // movierow hat als argument eine funktion (navcontroller navigate bei click auf die row
@@ -46,9 +47,12 @@ fun MainContent(navController: NavController, movieList: List<Movie>) {
                 movieId ->
                 navController.navigate(route= MovieScreens.DetailScreen.name +"/$movieId")
             }
+
         }
     }
 }
+
+
 
 
 @Composable

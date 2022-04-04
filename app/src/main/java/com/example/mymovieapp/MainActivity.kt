@@ -1,8 +1,10 @@
 package com.example.mymovieapp
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.expandVertically
@@ -25,10 +27,14 @@ import com.example.mymovieapp.models.getMovies
 import com.example.mymovieapp.navigation.MovieNavigation
 import com.example.mymovieapp.screens.all.HomeScreen
 import com.example.mymovieapp.ui.theme.MyMovieAppTheme
+import com.example.mymovieapp.viewmodel.FavoritesViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //val viewModelFavorites: FavoritesViewModel by viewModels()
+
         setContent {
             /*  MyMovieAppTheme {
                 // A surface container using the 'background' color from the theme
@@ -48,7 +54,33 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-/*
+    override fun onPause() {
+        super.onPause()
+        Log.i("onPause", "doing on Pause")
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.i("onStart", "doing onStart")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.i("onStop", "doing onStop")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.i("Destroy", "doing on destroy ")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.i("onResume", "doing onResume")
+
+    }
+
+    /*
     @Composable
     fun MyApp(content: @Composable () -> Unit) {
 
