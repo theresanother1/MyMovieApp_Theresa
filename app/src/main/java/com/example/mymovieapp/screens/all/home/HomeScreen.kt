@@ -30,6 +30,7 @@ import com.example.mymovieapp.navigation.MovieScreens
 import com.example.mymovieapp.ui.theme.MyMovieAppTheme
 import com.example.mymovieapp.viewmodel.FavoritesViewModel
 import com.example.mymovieapp.widgets.MovieRow
+import com.example.mymovieapp.widgets.favoriteButton
 
 @Composable
 fun HomeScreen (navController: NavController = rememberNavController(), viewModel: FavoritesViewModel){
@@ -42,10 +43,38 @@ fun HomeScreen (navController: NavController = rememberNavController(), viewMode
 fun MainContent(navController: NavController, movieList: List<Movie>, viewModel:FavoritesViewModel) {
     LazyColumn {
         items(movieList) { movie ->
+            var checkMovie:Boolean
+            if (viewModel.favoriteMovies.isEmpty()){
+                checkMovie = false
+            } else {
+                checkMovie = viewModel.checkIfFavorite(movie)
+            }
+
             // movierow hat als argument eine funktion (navcontroller navigate bei click auf die row
-            MovieRow(movie = movie){        //weil ich bei clickable movie.id angegeben habe, hab ich jetzt zugriff auf id der movierow
-                movieId ->
-                navController.navigate(route= MovieScreens.DetailScreen.name +"/$movieId")
+            //weil ich bei clickable movie.id angegeben habe, hab ich jetzt zugriff auf id der movierow
+            //das ist das onItemClicked trailing lambda!!
+        //   movieId -> navController.navigate(route= MovieScreens.DetailScreen.name +"/$movieId")
+            MovieRow(movie = movie, /*favoriteState = checkMovie*/ onItemClick = {movieId -> navController.navigate(route= MovieScreens.DetailScreen.name +"/$movieId")},
+
+                /**added trailing lambda for actions if favorite Icon clicked
+                 * --> state changes, but Icon is not any different & it's not added to the list smh
+                 */
+
+                onIconClicked =
+                {movieFavorite
+                ->
+                    //var checkMovie = viewModel.checkIfFavorite(movieFavorite)
+                    when (checkMovie){
+                        true ->
+                            viewModel.removeFavorites(movieFavorite)
+                        false ->
+                            viewModel.addFavorites(movieFavorite)
+                    }
+                }
+
+            ){
+                    favoriteButton(isFavorite = checkMovie, movie = movie)
+
             }
 
         }

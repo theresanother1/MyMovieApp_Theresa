@@ -21,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -40,11 +41,13 @@ import com.example.mymovieapp.viewmodel.FavoritesViewModel
 @Preview
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun MovieRow(movie: Movie = getMovies()[3],
+fun MovieRow(movie: Movie = getMovies()[2],
+            /*favoriteState:Boolean = false,*/
              //callback function --> zugriff auf die MovieId, die von unten nach oben gepoppt wird
              /**CALLBACK FUNCTION -> mit default value schreiben, sonst müsst ich parameter an JEDER EINZELNEN STELLE adaptieren */
-             onItemClick: (String) -> Unit = {}    // kann jetzt jedes Mal, wenn MovieRow aufgerufen wird, dieses Lambda übergeben
-           // content: @Composable (Movie) -> Unit = {}
+             onItemClick: (String) -> Unit = {},    // kann jetzt jedes Mal, wenn MovieRow aufgerufen wird, dieses Lambda übergeben
+             onIconClicked: (Movie) -> Unit = {},
+             content: @Composable () -> Unit = {}
 ) {
     var changeArrow by remember{
         mutableStateOf(false)
@@ -53,9 +56,9 @@ fun MovieRow(movie: Movie = getMovies()[3],
     /**
      * added for passing value
      */
-    var favoriteState by remember{
+    /*var favoriteState by remember{
         mutableStateOf(false)
-    }
+    }*/
 
     Column() {
         Surface(
@@ -152,9 +155,38 @@ fun MovieRow(movie: Movie = getMovies()[3],
                             }
                         }
                     }
+                    content()
+                   /* Log.d("favorites", "favoriteState is $favoriteState, see ")
+                    when (favoriteState) {
+                        true ->
+                            favoriteButton( isFavorite = favoriteState, movie = movie)
 
 
-                    favoriteButton( isFavorite = false)
+                           /* Icon(
+                            imageVector = Icons.Default.KeyboardArrowUp,
+                            contentDescription = "Arrow Up",
+                            modifier = Modifier
+                                .padding(4.dp)
+                                .clickable(onClick = { changeArrow = !changeArrow })
+                                 )
+                            */
+
+                        false ->
+                            favoriteButton( isFavorite = favoriteState, movie = movie)
+
+                          /*  Icon(
+                            imageVector = Icons.Default.KeyboardArrowDown,
+                            contentDescription = "Arrow Down",
+                            modifier = Modifier
+                                .padding(4.dp)
+                                .clickable(onClick = { changeArrow = !changeArrow })
+                        )
+
+                           */
+
+                    }*/
+
+                  //  favoriteButton( isFavorite = favoriteState)
 
 
 
@@ -167,13 +199,16 @@ fun MovieRow(movie: Movie = getMovies()[3],
     }
 
     /**
-     * added button in movierow
+     * added button as content of MovieRow in MainContent
      */
 
 }
 @Composable
-fun favoriteButton(isFavorite:Boolean){
-
+fun favoriteButton(isFavorite:Boolean,
+                   movie:Movie,
+                   onItemClick: (Movie) -> Unit = {}
+){
+    //Log.d("favorites", "isFavorite is $isFavorite, see ")
     /*
      clickable {
          onClick = {favoriteState != favoriteState}
@@ -186,22 +221,33 @@ fun favoriteButton(isFavorite:Boolean){
 
 
      */
-    if (isFavorite){
+    var state by remember{
+        mutableStateOf(false)
+    }
+    state = isFavorite
+   // var state = isFavorite
+    when (state) {
+        true ->
         Column(modifier = Modifier.heightIn(min= 130.dp).fillMaxWidth().padding(horizontal = 2.dp)
             , horizontalAlignment = Alignment.End,
             verticalArrangement = Arrangement.Center
-        ){ IconButton(modifier = Modifier.clickable(onClick = { /*TODO*/ } ), onClick = {/*TODO*/}) {
-            Icon(imageVector = Icons.Default.Favorite, contentDescription = "Favorites")
+        ){ IconButton(/*modifier = Modifier.clickable(onClick = { onItemClick(movie.id) } ), */onClick = {state = !state; onItemClick(movie); Log.d("favorites", "clicked from true -> $state")}) {
+            Icon(imageVector = Icons.Default.Favorite, contentDescription = "Favorites", tint = Color.Cyan)
+            //Log.d("favorites", "state is $state, should be false, bec true when started")
         }
-    }}
-    else if (!isFavorite) {
+        }
+        false ->
         Column(modifier = Modifier.heightIn(min= 130.dp).fillMaxWidth()
             , horizontalAlignment = Alignment.End,
             verticalArrangement = Arrangement.Center
-        ){IconButton(onClick = {}) {
-            Icon(imageVector = Icons.Default.FavoriteBorder, contentDescription = "NotFavorites")
+        ){IconButton(/*modifier = Modifier.clickable(onClick = { onItemClick(movie.id) } ),*/ onClick = {state = !state; onItemClick(movie); Log.d("favorites", "clicked from false -> $state")}) {
+            Icon(imageVector = Icons.Default.FavoriteBorder, contentDescription = "NotFavorites", tint = Color.Cyan)
+            //Log.d("favorites", "state is $state, should be true, bec false when started")
         }
-    }}
+    }
+
+    }
+
 }
 /* IconButton(onClick = { if (!viewModel.checkIfFavorite(movie)) {
      viewModel.addFavorites(movie)

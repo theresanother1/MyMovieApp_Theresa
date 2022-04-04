@@ -25,6 +25,7 @@ import com.example.mymovieapp.navigation.MovieScreens
 import com.example.mymovieapp.ui.theme.MyMovieAppTheme
 import com.example.mymovieapp.viewmodel.FavoritesViewModel
 import com.example.mymovieapp.widgets.MovieRow
+import com.example.mymovieapp.widgets.favoriteButton
 
 
 @Composable
@@ -41,9 +42,14 @@ fun FavoritesContent(
     LazyColumn {
         items(movieList) { movie ->
             // movierow hat als argument eine funktion (navcontroller navigate bei click auf die row
-            MovieRow(movie = movie){        //weil ich bei clickable movie.id angegeben habe, hab ich jetzt zugriff auf id der movierow
+            /*MovieRow(movie = movie){        //weil ich bei clickable movie.id angegeben habe, hab ich jetzt zugriff auf id der movierow
                     movieId ->
                 navController.navigate(route= MovieScreens.DetailScreen.name +"/$movieId")
+            }*/
+            MovieRow(movie = movie, /*favoriteState = checkMovie*/ onItemClick = {movieId -> navController.navigate(route= MovieScreens.DetailScreen.name +"/$movieId")}){
+                favoriteButton(isFavorite = true, movie = movie)
+                //das ist das onItemClicked trailing lambda!!
+                //   movieId -> navController.navigate(route= MovieScreens.DetailScreen.name +"/$movieId")
             }
         }
     }
