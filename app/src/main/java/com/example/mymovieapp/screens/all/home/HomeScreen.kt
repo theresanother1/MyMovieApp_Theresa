@@ -45,9 +45,11 @@ fun MainContent(navController: NavController, movieList: List<Movie>, viewModel:
         items(movieList) { movie ->
             var checkMovie:Boolean
             if (viewModel.favoriteMovies.isEmpty()){
+                Log.d("main", "is empty")
                 checkMovie = false
             } else {
                 checkMovie = viewModel.checkIfFavorite(movie)
+                Log.d("main", "is not empty, ${movie.title} is $checkMovie")
             }
 
             // movierow hat als argument eine funktion (navcontroller navigate bei click auf die row
@@ -56,24 +58,29 @@ fun MainContent(navController: NavController, movieList: List<Movie>, viewModel:
         //   movieId -> navController.navigate(route= MovieScreens.DetailScreen.name +"/$movieId")
             MovieRow(movie = movie, /*favoriteState = checkMovie*/ onItemClick = {movieId -> navController.navigate(route= MovieScreens.DetailScreen.name +"/$movieId")},
 
-                /**added trailing lambda for actions if favorite Icon clicked
-                 * --> state changes, but Icon is not any different & it's not added to the list smh
-                 */
 
-                onIconClicked =
-                {movieFavorite
-                ->
-                    //var checkMovie = viewModel.checkIfFavorite(movieFavorite)
-                    when (checkMovie){
-                        true ->
-                            viewModel.removeFavorites(movieFavorite)
-                        false ->
-                            viewModel.addFavorites(movieFavorite)
-                    }
-                }
 
             ){
-                    favoriteButton(isFavorite = checkMovie, movie = movie)
+                /**added trailing lambda for actions if favorite Icon clicked
+                 */
+                    favoriteButton(isFavorite = checkMovie, movie = movie,  onIconClicked =
+                        {movieFavorite
+                            ->
+                            if (viewModel.favoriteMovies.isEmpty()){
+                                Log.d("main", "is empty")
+                                checkMovie = false
+                            } else {
+                                checkMovie = viewModel.checkIfFavorite(movie)
+                                Log.d("main", "is not empty, ${movieFavorite.title} is $checkMovie")
+                            }
+                             when (checkMovie){
+                                 true ->
+                                     viewModel.removeFavorites(movieFavorite)
+                                 false ->
+                                     viewModel.addFavorites(movieFavorite)
+                             }
+                            Log.d("onIconClicked", "doing stuff with movie ${movieFavorite.title}")
+                    })
 
             }
 

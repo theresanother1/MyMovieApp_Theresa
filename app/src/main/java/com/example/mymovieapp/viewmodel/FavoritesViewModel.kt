@@ -28,7 +28,7 @@ class FavoritesViewModel : ViewModel() {
     }
 
     fun checkIfFavorite(movie: Movie): Boolean {
-        return _movieList.first() == movie
+        return _movieList.contains(movie)
     }
 
 }

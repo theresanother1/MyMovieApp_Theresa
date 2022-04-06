@@ -203,24 +203,50 @@ fun MovieRow(movie: Movie = getMovies()[2],
      */
 
 }
+
+
 @Composable
 fun favoriteButton(isFavorite:Boolean,
                    movie:Movie,
-                   onItemClick: (Movie) -> Unit = {}
+                   onIconClicked: (Movie) -> Unit = {}
 ){
-    //Log.d("favorites", "isFavorite is $isFavorite, see ")
-    /*
-     clickable {
-         onClick = {favoriteState != favoriteState}
-         onItemClick(movie.id)
-     }
+    /*var state by remember{
+        mutableStateOf(false)
+    }*/
+    var state = isFavorite
+    // var state = isFavorite
+    when (state) {
+        true ->
+            Column(modifier = Modifier.heightIn(min= 130.dp).fillMaxWidth().padding(horizontal = 2.dp)
+                , horizontalAlignment = Alignment.End,
+                verticalArrangement = Arrangement.Center
+            ){ IconButton(/*modifier = Modifier.clickable(onClick = { onItemClick(movie.id) } ), */onClick = {onIconClicked(movie); Log.d("favorites", "clicked from true -> $state")}) {
+                Icon(imageVector = Icons.Default.Favorite, contentDescription = "Favorites", tint = Color.Cyan)
+                //Log.d("favorites", "state is $state, should be false, bec true when started")
+            }
+            }
+        false ->
+            Column(modifier = Modifier.heightIn(min= 130.dp).fillMaxWidth()
+                , horizontalAlignment = Alignment.End,
+                verticalArrangement = Arrangement.Center
+            ){IconButton(/*modifier = Modifier.clickable(onClick = { onItemClick(movie.id) } ),*/ onClick = {onIconClicked(movie); Log.d("favorites", "clicked from false -> $state")}) {
+                Icon(imageVector = Icons.Default.FavoriteBorder, contentDescription = "NotFavorites", tint = Color.Cyan)
+                //Log.d("favorites", "state is $state, should be true, bec false when started")
+            }
+            }
 
-     modifier = Modifier
-         .padding(4.dp)
-         .clickable(onClick = { changeArrow = !changeArrow })
+    }
+
+}
 
 
-     */
+
+
+/*@Composable
+fun favoriteButton(isFavorite:Boolean,
+                   movie:Movie,
+                   onIconClicked: (Movie) -> Unit = {}
+){
     var state by remember{
         mutableStateOf(false)
     }
@@ -231,7 +257,7 @@ fun favoriteButton(isFavorite:Boolean,
         Column(modifier = Modifier.heightIn(min= 130.dp).fillMaxWidth().padding(horizontal = 2.dp)
             , horizontalAlignment = Alignment.End,
             verticalArrangement = Arrangement.Center
-        ){ IconButton(/*modifier = Modifier.clickable(onClick = { onItemClick(movie.id) } ), */onClick = {state = !state; onItemClick(movie); Log.d("favorites", "clicked from true -> $state")}) {
+        ){ IconButton(/*modifier = Modifier.clickable(onClick = { onItemClick(movie.id) } ), */onClick = {onIconClicked(movie); Log.d("favorites", "clicked from true -> $state")}) {
             Icon(imageVector = Icons.Default.Favorite, contentDescription = "Favorites", tint = Color.Cyan)
             //Log.d("favorites", "state is $state, should be false, bec true when started")
         }
@@ -240,7 +266,7 @@ fun favoriteButton(isFavorite:Boolean,
         Column(modifier = Modifier.heightIn(min= 130.dp).fillMaxWidth()
             , horizontalAlignment = Alignment.End,
             verticalArrangement = Arrangement.Center
-        ){IconButton(/*modifier = Modifier.clickable(onClick = { onItemClick(movie.id) } ),*/ onClick = {state = !state; onItemClick(movie); Log.d("favorites", "clicked from false -> $state")}) {
+        ){IconButton(/*modifier = Modifier.clickable(onClick = { onItemClick(movie.id) } ),*/ onClick = {onIconClicked(movie); Log.d("favorites", "clicked from false -> $state")}) {
             Icon(imageVector = Icons.Default.FavoriteBorder, contentDescription = "NotFavorites", tint = Color.Cyan)
             //Log.d("favorites", "state is $state, should be true, bec false when started")
         }
@@ -249,11 +275,9 @@ fun favoriteButton(isFavorite:Boolean,
     }
 
 }
-/* IconButton(onClick = { if (!viewModel.checkIfFavorite(movie)) {
-     viewModel.addFavorites(movie)
- } }) {
-     Icon(imageVector = Icons.Default.FavoriteBorder, contentDescription = "Favorites")
- }*/
+
+ */
+
 
 
 

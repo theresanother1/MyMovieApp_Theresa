@@ -46,10 +46,8 @@ fun FavoritesContent(
                     movieId ->
                 navController.navigate(route= MovieScreens.DetailScreen.name +"/$movieId")
             }*/
-            MovieRow(movie = movie, /*favoriteState = checkMovie*/ onItemClick = {movieId -> navController.navigate(route= MovieScreens.DetailScreen.name +"/$movieId")}){
-                favoriteButton(isFavorite = true, movie = movie)
-                //das ist das onItemClicked trailing lambda!!
-                //   movieId -> navController.navigate(route= MovieScreens.DetailScreen.name +"/$movieId")
+            MovieRow(movie = movie, onItemClick = {movieId -> navController.navigate(route= MovieScreens.DetailScreen.name +"/$movieId")}){
+
             }
         }
     }

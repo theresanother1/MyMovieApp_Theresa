@@ -1,8 +1,10 @@
 package com.example.mymovieapp.screens.all.detail
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -16,9 +18,11 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.mymovieapp.models.Movie
 import com.example.mymovieapp.models.getMovies
+import com.example.mymovieapp.navigation.MovieScreens
 import com.example.mymovieapp.viewmodel.FavoritesViewModel
 import com.example.mymovieapp.widgets.HorizontalScrollableImageView
 import com.example.mymovieapp.widgets.MovieRow
+import com.example.mymovieapp.widgets.favoriteButton
 
 //@Preview(showBackground = true)
 @Composable
@@ -58,19 +62,50 @@ fun DetailScreen (
 fun MainContent(movie: Movie, viewModel: FavoritesViewModel){
     Surface(modifier = Modifier
         .fillMaxWidth()
-        .fillMaxHeight()){
+        .fillMaxHeight()) {
 
         Column {
-            MovieRow(movie=movie)
-            Spacer(modifier=Modifier.height(8.dp))
+            MovieRow(movie = movie) {
+                var checkMovie: Boolean
+                if (viewModel.favoriteMovies.isEmpty()) {
+                    Log.d("main", "is empty")
+                    checkMovie = false
+                } else {
+                    checkMovie = viewModel.checkIfFavorite(movie)
+                    Log.d("main", "is not empty, ${movie.title} is $checkMovie")
+                }
+                /**added trailing lambda for actions if favorite Icon clicked
+                 */
+                favoriteButton(isFavorite = checkMovie, movie = movie, onIconClicked =
+                { movieFavorite
+                    ->
+                    if (viewModel.favoriteMovies.isEmpty()) {
+                        Log.d("main", "is empty")
+                        checkMovie = false
+                    } else {
+                        checkMovie = viewModel.checkIfFavorite(movie)
+                        Log.d("main", "is not empty, ${movieFavorite.title} is $checkMovie")
+                    }
+                    when (checkMovie) {
+                        true ->
+                            viewModel.removeFavorites(movieFavorite)
+                        false ->
+                            viewModel.addFavorites(movieFavorite)
+                    }
+                    Log.d("onIconClicked", "doing stuff with movie ${movieFavorite.title}")
+                })
+
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
             Divider()
             HorizontalScrollableImageView(movie = movie)
         }
-
+    }
 
     }
 
-}
+
 
 fun filterMovie(movieId: String?) : Movie{
     // movieId ist eindeutiger Wert, filtert durch und gibt ersten wert zurück
