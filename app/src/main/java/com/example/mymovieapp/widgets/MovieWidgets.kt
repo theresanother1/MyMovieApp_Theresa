@@ -41,7 +41,7 @@ import com.example.mymovieapp.viewmodel.FavoritesViewModel
 @Preview
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun MovieRow(movie: Movie = getMovies()[2],
+fun MovieRow(movie: Movie = getMovies()[3],
             /*favoriteState:Boolean = false,*/
              //callback function --> zugriff auf die MovieId, die von unten nach oben gepoppt wird
              /**CALLBACK FUNCTION -> mit default value schreiben, sonst müsst ich parameter an JEDER EINZELNEN STELLE adaptieren */
@@ -101,7 +101,7 @@ fun MovieRow(movie: Movie = getMovies()[2],
 
                     Column(
                         modifier = Modifier
-                            .padding( 15.dp)
+                            .padding( 15.dp).width(200.dp)
                         //.height(110.dp)
                     ) {
 
@@ -128,7 +128,7 @@ fun MovieRow(movie: Movie = getMovies()[2],
                             )
 
                         }
-                        Column() {
+                        Column(modifier = Modifier.width(200.dp)) {
                             AnimatedVisibility(
                                 visible = changeArrow,
                                 enter = expandVertically(expandFrom = Alignment.Top)
@@ -156,6 +156,7 @@ fun MovieRow(movie: Movie = getMovies()[2],
                         }
                     }
                     content()
+
                    /* Log.d("favorites", "favoriteState is $favoriteState, see ")
                     when (favoriteState) {
                         true ->
@@ -186,7 +187,7 @@ fun MovieRow(movie: Movie = getMovies()[2],
 
                     }*/
 
-                  //  favoriteButton( isFavorite = favoriteState)
+                    //favoriteButton( isFavorite = false, movie = movie)
 
 
 
@@ -217,7 +218,7 @@ fun favoriteButton(isFavorite:Boolean,
     // var state = isFavorite
     when (state) {
         true ->
-            Column(modifier = Modifier.heightIn(min= 130.dp).fillMaxWidth().padding(horizontal = 2.dp)
+            Column(modifier = Modifier.heightIn(min= 130.dp)
                 , horizontalAlignment = Alignment.End,
                 verticalArrangement = Arrangement.Center
             ){ IconButton(/*modifier = Modifier.clickable(onClick = { onItemClick(movie.id) } ), */onClick = {onIconClicked(movie); Log.d("favorites", "clicked from true -> $state")}) {
@@ -226,7 +227,7 @@ fun favoriteButton(isFavorite:Boolean,
             }
             }
         false ->
-            Column(modifier = Modifier.heightIn(min= 130.dp).fillMaxWidth()
+            Column(modifier = Modifier.heightIn(min= 130.dp)
                 , horizontalAlignment = Alignment.End,
                 verticalArrangement = Arrangement.Center
             ){IconButton(/*modifier = Modifier.clickable(onClick = { onItemClick(movie.id) } ),*/ onClick = {onIconClicked(movie); Log.d("favorites", "clicked from false -> $state")}) {
