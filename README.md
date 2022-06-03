@@ -1,2 +1,2 @@
-# MyMovieApp_Theresa
-Movie App for Software Engineering Course
+# MyMovieApp
+Simple Android App using Jetpack Compose. For educational purposes. 
